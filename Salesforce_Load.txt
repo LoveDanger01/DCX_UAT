@@ -1,0 +1,179 @@
+[Global]
+$Now=%date:~-4,4%%date:~-7,2%%date:~-10,2%_%time:~0,2%%time:~3,2%%time:~6,2%
+$Today=DATE
+
+#*----------DB Details and Audit Table---------#
+$DBServer="AE-SQL-RPT-UAT"
+$DB_EDW_DataLake="EDW_Outbound"
+$DB_Schema_salesforce="salesforce"
+$AuditDB="EDW_Audit"
+$AuditSchema="dbo"
+$CycleExecTable="Cycle_Exec"
+$BatchExecTable="Batch_Exec"
+$CycleDomainView="Cycle_Domain_Vw"
+$BatchDomainView="Batch_Domain_Vw"
+
+#----------Informatica Shared Directories-----#
+$Infa_Util_Dir_Logs="\\ae-file\data_mngt\InformaticaUtilities\Logs"
+$IICS_RunAJobCli_Path="C:\Program Files\Informatica Cloud Secure Agent\apps\runAJobCli"
+$Taskflow_Type_Pattern="t"
+$Taskflow_Type_Value="TASKFLOW"
+$Taskflow_Name_Pattern="un"
+$MappingTask_Type_Pattern="t"
+$MappingTask_Type_Value="DRS"
+$MappingTask_Name_Pattern="n"
+$IICS_Task_Folder="SALESFORCE\InitialLoad"
+$IICS_Task_Name_Producer="rt_Salesforce_Lookup_Producer"
+$IICS_Task_Name_Contact="rt_Salesforce_Lookup_Contact"
+$IICS_Task_Name_Account="rt_Salesforce_Lookup_Account"
+$IICS_Task_Name_Address="rt_Salesforce_Lookup_Address__c"
+$IICS_Task_Name_SubAccount="rt_Salesforce_Lookup_SubAccount"
+$IICS_Task_Name_All="rt_Salesforce_Lookups"
+$IICS_Task_Name_InsurancePolicy="rt_Salesforce_Lookup_InsurancePolicy"
+$IICS_Taskflow_Name=""
+$IICS_Task_Name_Landing_Family_Authorizations="rt_Inbound_To_EDW_Landing_Family_Authorizations"
+$IICS_Task_Name_Landing_Agent_Authorizations="rt_Inbound_To_EDW_Landing_Agent_Authorizations"
+
+
+#------IICS RootDir And External Vendor Dir----#
+$InfaShared_RootDir=\\ae-file\Data_mngt\InformaticaUAT\infa_shared
+$Infa_Util_Dir=\\ae-file\data_mngt\InformaticaUtilities
+$EDW_UserParamDir=C:\Users\svc_informatica\Documents\infa_shared\EDW_UserParam
+$EDW_SrcFilesDir=\\ae-file\Data_mngt\InformaticaUAT\infa_shared\EDW_SrcFiles
+$EDW_TgtFilesDir=\\ae-file\Data_mngt\InformaticaUAT\infa_shared\EDW_TgtFiles
+$EDW_ScriptsDir=\\ae-file\Data_mngt\InformaticaUAT\infa_shared\EDW_Scripts
+$EDW_UserParamNetworkDir=\\ae-file\Data_mngt\InformaticaUAT\infa_shared\EDW_UserParam
+$EDW_WrapperLogsDir=\\ae-file\Data_mngt\InformaticaUAT\infa_shared\EDW_WrapperLogs
+
+
+#----------Cycle and Batch Parameters----------#
+$$IntradayAutoDL_Curr_Cycle_ID=11171
+$$IntradayAutoDL_Curr_Salesforce_Batch_ID=63876
+
+#----------Audit In-Out Parameters-------------#
+$$Status_Code_Initiated=I
+$$Status_Code_Running=R
+$$Status_Code_Completed=C
+$$Status_Code_Failed=F
+$$Status_Code_CompletedWithError=D
+$IntradayAutoDL_Cycle_Type_Name="Data_Lake_Automated_Intraday"
+$Intraday_Batch_ParamFileNames="Salesforce_Load.txt"
+$Intraday_Batch_SystemCode="Salesforce"
+$IntradayAutoDL_HardCodeBatchID="IntradayAutoDL_Curr_Salesforce_Batch_ID"
+$Intraday_Batch_Type_Name="Intraday_DataLake_Salesforce_15Min"
+$IntradayAutoDL_HardCodeCurrCycleID="IntradayAutoDL_Curr_Cycle_ID"
+
+#----------IICS Data Object Type Parameters----#
+$InfaServer1_ParamDir="\\ucus-infa01\C$\Users\svc_informatica\Documents\infa_shared\EDW_UserParam"
+$InfaServer2_ParamDir="\\ucus-infa02\C$\Users\svc_informatica\Documents\infa_shared\EDW_UserParam"
+$InfaServer3_ParamDir="\\az-htim-infa-u1\c$\Users\svc_informatica\Documents\infa_shared\EDW_UserParam"
+$InfaServer4_ParamDir="\\az-htim-infa-u2\c$\Users\svc_informatica\Documents\infa_shared\EDW_UserParam"
+
+#----------------stat id parameters, script log file names--#
+$IntradayAutoDL_StartBatchSuccessLog="IntradayAutoDL_StartBatch_Salesforce_SuccessLog.txt"
+$IntradayAutoDL_StartBatchErrLog="IntradayAutoDL_StartBatch_Salesforce_ErrorLog.txt"
+$IntradayAutoDL_RemoveTempLogs="IntradayAutoDL_*.txt"
+
+
+#-----------IICS Step Parameters---------#
+$$Batch_Type_Name_Salesforce=Intraday_DataLake_Salesforce_15Min
+$$IntradayAutoDL_Cycle_Type=Data_Lake_Automated_Intraday
+$$Batch_System_Code=Salesforce
+$$Stage_Loc_Code='E_STG'
+$$DataLake_Loc_Code='DLK'
+$$Error_Threshold_Minutes=360
+
+#----------List All PowerShell Scripts--------------#
+$script_Call_Salesforce_ScheduledTask=Call_LifePro_ScheduledTask.ps1
+$script_Exec_StoredProc_CDC_With_StepCounts=Exec_CDC_With_StepCounts.ps1
+$script_BatchStartIntraday=StartIntradayBatch_And_InsertAudits.ps1
+$script_Exec_GenericSqlServerSP=Exec_GenericSqlServerStoredProc.ps1
+
+
+#-----------Cycle Type & Audit Domain Parameters------------#
+$DailyAutoDL_Cycle_Type_Name=""
+$Batch_SystemCode="salesforce"
+$Batch_Type_Name_Salesforce=""
+
+
+#---------- CDC Scripts -----#
+$sp_Salesforce_Account_Address_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Account_Address $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_account_address.txt
+$sp_Salesforce_Account_BrokerDealer_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Account_BrokerDealer $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Account_BrokerDealer.txt
+$sp_Salesforce_Account_Business_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Account_Business $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Account_Business.txt
+$sp_Salesforce_Account_Institution_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Account_Institution $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Account_Institution.txt
+$sp_Salesforce_Account_NMO_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Account_NMO $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Account_NMO.txt
+$sp_Salesforce_Account_Person_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Account_Person $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Account_Person.txt
+$sp_Salesforce_Account_Wholesaler_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Account_Wholesaler $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Account_Wholesaler.txt
+$sp_Salesforce_Account_Address_Sub_Account_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Account_Address_Sub_Account $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Account_Address_Sub_Account.txt
+$sp_Salesforce_Address_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Address $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_address.txt
+$sp_Salesforce_Advisor_Contact_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Advisor_Contact $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Advisor_Contact.txt
+$sp_Salesforce_Agent_Hierarchy_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Agent_Hierarchy $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Agent_Hierarchy.txt
+$sp_Salesforce_Agent_Tax_Document_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Agent_Tax_Documents $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Agent_Tax_Documents.txt
+$sp_Salesforce_Allocation_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Allocation $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Allocation.txt
+$sp_Salesforce_Allocation_Rates_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Allocation_Rates $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Allocation_Rates.txt
+$sp_Salesforce_Business_Contract_Business_Beneficiary_Account_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Business_Contract_Business_Beneficiary_Account $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Business_Contract_Business_Beneficiary_Account.txt
+$sp_Salesforce_Business_Contract_Other_Contact_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Business_Contract_Other_Contact $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Business_Contract_Other_Contact.txt
+$sp_Salesforce_Contact_Name_ID_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Contact_Name_ID $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Contact_Name_ID.txt
+$sp_Salesforce_Hierarchy_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Insert_Hierarchy $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Hierarchy.txt
+$sp_Salesforce_Individual_Contract_Business_Beneficiary_Account_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Individual_Contract_Business_Beneficiary_Account $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Individual_Contract_Business_Beneficiary_Account.txt
+$sp_Salesforce_Insurance_Policy_Authorization_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Insurance_Policy_Authorization $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Insurance_Policy_Authorization.txt
+$sp_Salesforce_Insurance_Policy_Participant_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Insurance_Policy_Participant $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Insurance_Policy_Participant.txt
+$sp_Salesforce_Insurance_Policy_Transaction_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Insurance_Policy_Transaction $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Insurance_Policy_Transaction.txt
+$sp_Salesforce_PhoneNumber_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_PhoneNumber $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_PhoneNumber.txt
+$sp_Salesforce_Policy_Document_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Policy_Documents $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Policy_Documents.txt
+$sp_Salesforce_Producer_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Producer $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Producer.txt
+$sp_Salesforce_Producer_Address_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Producer_Address $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Producer_Address.txt
+$sp_Salesforce_Producer_Policy_Assignment_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Producer_Policy_Assignment $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Producer_Policy_Assignment.txt
+$sp_Salesforce_Producer_Upline_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Producer_Upline $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Producer_Upline.txt
+$sp_Salesforce_Product_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Product $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_product.txt
+$sp_Salesforce_Sub_Account_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Sub_Account $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Sub_Account.txt
+$sp_Salesforce_Policy_Tax_Document_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Policy_Tax_Documents $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Policy_Tax_Documents.txt
+$sp_Salesforce_Policy_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Policy $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Policy.txt
+$sp_Salesforce_Upline_Detail_Load=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Upsert_Upline_Detail $EDW_WrapperLogsDir DeltaLoad_Log_Salesforce_Upline_Detail.txt
+
+
+
+#---------- Truncate sync table procedures -----#
+$sp_Salesforce_Account_Person_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Account_Person $EDW_WrapperLogsDir Truncate_Log_Salesforce_Account_Person.txt
+$sp_salesforce_Account_Address_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Account_Address $EDW_WrapperLogsDir Truncate_Log_salesforce_Account_Address.txt
+$sp_salesforce_Account_BrokerDealer_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Account_BrokerDealer $EDW_WrapperLogsDir Truncate_Log_salesforce_Account_BrokerDealer.txt
+$sp_salesforce_Account_Business_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Account_Business $EDW_WrapperLogsDir Truncate_Log_salesforce_Account_Business.txt
+$sp_salesforce_Account_Institution_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Account_Institution $EDW_WrapperLogsDir Truncate_Log_salesforce_Account_Institution.txt
+$sp_salesforce_Account_NMO_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Account_NMO $EDW_WrapperLogsDir Truncate_Log_salesforce_Account_NMO.txt
+$sp_salesforce_Account_Wholesaler_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Account_Wholesaler $EDW_WrapperLogsDir Truncate_Log_salesforce_Account_Wholesaler.txt
+$sp_salesforce_Address_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Address $EDW_WrapperLogsDir Truncate_Log_salesforce_Address.txt
+$sp_salesforce_Advisor_Contact_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Advisor_Contact $EDW_WrapperLogsDir Truncate_Log_salesforce_Advisor_Contact.txt
+$sp_salesforce_Agent_Hierarchy_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Agent_Hierarchy $EDW_WrapperLogsDir Truncate_Log_salesforce_Agent_Hierarchy.txt
+$sp_salesforce_Agent_Tax_Documents_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Agent_Tax_Document $EDW_WrapperLogsDir Truncate_Log_salesforce_Agent_Tax_Document.txt
+$sp_salesforce_Allocation_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Allocation $EDW_WrapperLogsDir Truncate_Log_salesforce_Allocation.txt
+$sp_salesforce_Business_Contract_Business_Beneficiary_Account_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Business_Contract_Business_Beneficiary_Account $EDW_WrapperLogsDir Truncate_Log_salesforce_Business_Contract_Business_Beneficiary_Account.txt
+$sp_salesforce_Business_Contract_Other_Contact_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Business_Contract_Other_Contact $EDW_WrapperLogsDir Truncate_Log_salesforce_Business_Contract_Other_Contact.txt
+$sp_salesforce_Individual_Contract_Business_Beneficiary_Account_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Individual_Contract_Business_Beneficiary_Account $EDW_WrapperLogsDir Truncate_Log_salesforce_Individual_Contract_Business_Beneficiary_Account.txt
+$sp_salesforce_Insurance_Policy_Authorization_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Insurance_Policy_Authorization $EDW_WrapperLogsDir Truncate_Log_salesforce_Insurance_Policy_Authorization.txt
+$sp_salesforce_Insurance_Policy_Participant_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Insurance_Policy_Participant $EDW_WrapperLogsDir Truncate_Log_salesforce_Insurance_Policy_Participant.txt
+$sp_salesforce_Insurance_Policy_Transaction_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Insurance_Policy_Transaction $EDW_WrapperLogsDir Truncate_Log_salesforce_Insurance_Policy_Transaction.txt
+$sp_salesforce_PhoneNumber_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_PhoneNumber $EDW_WrapperLogsDir Truncate_Log_salesforce_PhoneNumber.txt
+$sp_salesforce_Policy_Documents_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Policy_Document $EDW_WrapperLogsDir Truncate_Log_salesforce_Policy_Document.txt
+$sp_Salesforce_Producer_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Producer $EDW_WrapperLogsDir Truncate_Log_Salesforce_Producer.txt
+$sp_Salesforce_Producer_Policy_Assignment_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Producer_Policy_Assignment $EDW_WrapperLogsDir Truncate_Log_Salesforce_Producer_Policy_Assignment.txt
+$sp_salesforce_Producer_Address_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Producer_Address $EDW_WrapperLogsDir Truncate_Log_salesforce_Producer_Address.txt
+$sp_salesforce_Producer_Upline_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Producer_Upline $EDW_WrapperLogsDir Truncate_Log_salesforce_Producer_Upline.txt
+$sp_salesforce_Product_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Product $EDW_WrapperLogsDir Truncate_Log_salesforce_Product.txt
+$sp_salesforce_Sub_Account_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Sub_Account $EDW_WrapperLogsDir Truncate_Log_salesforce_Sub_Account.txt
+$sp_salesforce_Policy_Tax_Documents_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Policy_Tax_Document $EDW_WrapperLogsDir Truncate_Log_salesforce_Policy_Tax_Document.txt
+$sp_salesforce_Account_Address_Sub_Account_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Account_Address_Sub_Account $EDW_WrapperLogsDir Truncate_Log_salesforce_Account_Address_Sub_Account.txt
+$sp_Salesforce_Policy_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Policy $EDW_WrapperLogsDir Truncate_Log_Salesforce_Policy.txt
+$sp_salesforce_Upline_Detail_Truncate_Stage=echo off | powershell -executionPolicy bypass -file $EDW_ScriptsDir\$script_Exec_GenericSqlServerSP $DBServer $DB_EDW_DataLake $DB_Schema_salesforce usp_Truncate_Upline_Detail $EDW_WrapperLogsDir Truncate_Log_salesforce_Upline_Detail.txt
+
+
+#----------IICS RunAJobCli script parameters-----#
+$Call_IICS_DRS_Manage_rt_SF_Lookups=echo off | powershell -executionPolicy bypass -file $Infa_Util_Dir\Call_Informatica_RunAJobCli.ps1 $IICS_RunAJobCli_Path $IICS_Task_Folder $MappingTask_Type_Pattern $MappingTask_Type_Value $MappingTask_Name_Pattern $IICS_Task_Name_All
+$Call_IICS_DRS_Manage_rt_SF_Lookup_Account=echo off | powershell -executionPolicy bypass -file $Infa_Util_Dir\Call_Informatica_RunAJobCli.ps1 $IICS_RunAJobCli_Path $IICS_Task_Folder $MappingTask_Type_Pattern $MappingTask_Type_Value $MappingTask_Name_Pattern $IICS_Task_Name_Account
+$Call_IICS_DRS_Manage_rt_SF_Lookup_Account_Address=echo off | powershell -executionPolicy bypass -file $Infa_Util_Dir\Call_Informatica_RunAJobCli.ps1 $IICS_RunAJobCli_Path $IICS_Task_Folder $MappingTask_Type_Pattern $MappingTask_Type_Value $MappingTask_Name_Pattern $IICS_Task_Name_Account_Address
+$Call_IICS_DRS_Manage_rt_SF_Landing_Agent_Authorizations=echo off | powershell -executionPolicy bypass -file $Infa_Util_Dir\Call_Informatica_RunAJobCli.ps1 $IICS_RunAJobCli_Path $IICS_Task_Folder $MappingTask_Type_Pattern $MappingTask_Type_Value $MappingTask_Name_Pattern $IICS_Task_Name_Landing_Agent_Authorizations
+$Call_IICS_DRS_Manage_rt_SF_Lookup_Producer=echo off | powershell -executionPolicy bypass -file $Infa_Util_Dir\Call_Informatica_RunAJobCli.ps1 $IICS_RunAJobCli_Path $IICS_Task_Folder $MappingTask_Type_Pattern $MappingTask_Type_Value $MappingTask_Name_Pattern $IICS_Task_Name_Producer
+$Call_IICS_DRS_Manage_rt_SF_Lookup_Contact=echo off | powershell -executionPolicy bypass -file $Infa_Util_Dir\Call_Informatica_RunAJobCli.ps1 $IICS_RunAJobCli_Path $IICS_Task_Folder $MappingTask_Type_Pattern $MappingTask_Type_Value $MappingTask_Name_Pattern $IICS_Task_Name_Contact
+$Call_IICS_DRS_Manage_rt_SF_Lookup_SubAccount=echo off | powershell -executionPolicy bypass -file $Infa_Util_Dir\Call_Informatica_RunAJobCli.ps1 $IICS_RunAJobCli_Path $IICS_Task_Folder $MappingTask_Type_Pattern $MappingTask_Type_Value $MappingTask_Name_Pattern $IICS_Task_Name_SubAccount
+$Call_IICS_DRS_Manage_rt_SF_Lookup_Address=echo off | powershell -executionPolicy bypass -file $Infa_Util_Dir\Call_Informatica_RunAJobCli.ps1 $IICS_RunAJobCli_Path $IICS_Task_Folder $MappingTask_Type_Pattern $MappingTask_Type_Value $MappingTask_Name_Pattern $IICS_Task_Name_Address
+$Call_IICS_DRS_Manage_rt_SF_Lookup_InsurancePolicy=echo off | powershell -executionPolicy bypass -file $Infa_Util_Dir\Call_Informatica_RunAJobCli.ps1 $IICS_RunAJobCli_Path $IICS_Task_Folder $MappingTask_Type_Pattern $MappingTask_Type_Value $MappingTask_Name_Pattern $IICS_Task_Name_InsurancePolicy
+$Call_IICS_DRS_Manage_rt_SF_Landing_Family_Authorizations=echo off | powershell -executionPolicy bypass -file $Infa_Util_Dir\Call_Informatica_RunAJobCli.ps1 $IICS_RunAJobCli_Path $IICS_Task_Folder $MappingTask_Type_Pattern $MappingTask_Type_Value $MappingTask_Name_Pattern $IICS_Task_Name_Landing_Family_Authorizations

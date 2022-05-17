@@ -1,0 +1,11 @@
+#-----------Parameter values for  CAI process prcs_SF_ServiceBus_Account---------#
+$DBServerName=AE-SQL-RPT-UAT
+$DBName=EDW_Outbound
+$DBSchema=salesforce
+$PowershellBatchName=Exec_GenericSqlServerStoredProcInputparam.bat
+$Stored_Proc_Working_dir=\\ae-file\Data_mngt\InformaticaUAT\infa_shared\EDW_Scripts\
+$Powershell_Path=\\ae-file\Data_mngt\InformaticaUAT\infa_shared\EDW_Scripts\
+$Powershell_Log_Directory=\\ae-file\Data_mngt\InformaticaUAT\infa_shared\EDW_WrapperLogs
+$email=abdul.mannuru@american-equity.com;Srini.Veeravalli@american-equity.com;Venkata.Esanakarra@american-equity.com;Anastasia.Vogelaar@american-equity.com
+
+
